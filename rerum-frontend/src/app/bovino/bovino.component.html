@@ -1,0 +1,268 @@
+<div class="container center-block mb-5">
+
+    <!--TOOGLES INICIO-->
+    <div class="row justify-content-center">
+        <div class="btn-group btn-group-toggle my-3 col-md-6 col-sm-12" data-toggle="buttons">
+            <button class="btn btn-secondary" [class.active]="list" (click)="showList()">
+                <i class="icon ion-md-list"></i> Bovino
+            </button>
+            <button class="btn btn-secondary" (click)="showRegister()"
+                [class.active]="register && (formulario.controls['codigo'].value == null)">
+                <i class="icon ion-md-person-add"></i> Novo
+            </button>
+        </div>
+    </div>
+    <!--TOOGLES FIM-->
+
+    <!--CADASTRO INICIO-->
+    <div class="row justify-content-center" *ngIf="register">
+        <div class="col col-md-5 col-sm-12">
+
+            <h2 class="my-md-1 text-center">
+                {{ formulario.controls['codigo'].value == null? 'Cadastro de ' : 'Editar '}} Bovino
+            </h2>
+
+            <form [formGroup]="formulario">
+                <div class="form row">
+                    <div class="form-group col-sm-12 col-md-6">
+                        <label for="nome">Brinco:</label>
+                        <input formControlName="brinco" type="text" class="form-control" placeholder="Brinco" maxlength="8"
+                            [class.is-invalid]="!formulario.controls['brinco'].valid
+                                                && formulario.controls['brinco'].touched">
+                        <div class="invalid-feedback">*Esse campo é obrigatório!</div>
+                    </div>
+                    <div class="form-group col-sm-12 col-md-6">
+                        <label for="nome">Nome:</label>
+                        <input formControlName="nome" type="text" class="form-control" placeholder="Nome" maxlength="20"
+                            [class.is-invalid]="!formulario.controls['nome'].valid
+                                                && formulario.controls['nome'].touched">
+                        <div class="invalid-feedback">*Esse campo é obrigatório!</div>
+                    </div>
+                </div>
+
+                
+                <div class="form row">
+                    <div class="form-group col-sm-3 col-md-3">
+                        <label for="sexo">Sexo:</label>
+                        <select class="form-control" formControlName="sexo" id="situacao">
+                        <option selected>M</option>
+                        <option>F</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4 col-md-4">
+                        <label for="situacao">Situação</label>
+                        <select class="form-control" formControlName="situacao" id="situacao">
+                        <option selected>Lactação</option>
+                        <option>Seca</option>
+                        <option>Vendido</option>
+                        <option>Morto</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-5 col-md-5">
+                        <label for="nascimento">Nascimento:</label>
+                        <input formControlName="nascimento" type="date" class="form-control" placeholder="dd/mm/aaaa"
+                            [class.is-valid]="formulario.controls['nascimento'].valid && formulario.controls['nascimento'].touched"
+                            [class.is-invalid]="!formulario.controls['nascimento'].valid && formulario.controls['nascimento'].touched">
+                        <div class="valid-feedback"></div>
+                        <div class="invalid-feedback">
+                            *A data está em um formato inválido!
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="form row">
+                    <div class="form-group col-sm-12 col-md-6">
+                        <label for="brincoMae">Brinco mãe:</label>
+                        <select class="form-control" formControlName="brincoMae">
+                            <option [ngValue]=""></option>
+                            <option *ngFor="let b of listaFeminina" [ngValue]="b.brinco">{{b.brinco}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-12 col-md-6">
+                        <label for="brincoPai">Brinco pai:</label>
+                        <select class="form-control" formControlName="brincoPai">
+                            <option [ngValue]=""></option>
+                            <option *ngFor="let b of listaMasculina" [ngValue]="b.brinco">{{b.brinco}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="raca">Raça</label>
+                    <select class="form-control" formControlName="raca" id="raca">
+                    <option selected>Girolando</option>
+                    <option>Holandês</option>
+                    <option>Gir</option>
+                    <option>Jersey</option>
+                    </select>
+                </div>
+
+                <div class="form-row" *ngIf="formulario.controls['sexo'].value == 'F'">
+                    <div class="form-group col-sm-5 col-md-4">
+                        <label for="ultimoParto">Último Parto:</label>
+                        <input formControlName="ultimoParto" type="date" class="form-control" placeholder="dd/mm/aaaa"
+                            [class.is-valid]="formulario.controls['ultimoParto'].valid && formulario.controls['ultimoParto'].touched"
+                            [class.is-invalid]="!formulario.controls['ultimoParto'].valid && formulario.controls['ultimoParto'].touched">
+                        <div class="valid-feedback"></div>
+                        <div class="invalid-feedback">
+                            *A data está em um formato inválido!
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-5 col-md-4">
+                        <label for="prenhes">Prenhes:</label>
+                        <input formControlName="prenhes" type="date" class="form-control" placeholder="dd/mm/aaaa"
+                            [class.is-valid]="formulario.controls['prenhes'].valid && formulario.controls['prenhes'].touched"
+                            [class.is-invalid]="!formulario.controls['prenhes'].valid && formulario.controls['prenhes'].touched">
+                        <div class="valid-feedback"></div>
+                        <div class="invalid-feedback">
+                            *A data está em um formato inválido!
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-5 col-md-4" disabled>
+                        <label for="parto">Parto:</label>
+                        <input formControlName="parto" type="date" class="form-control" placeholder="dd/mm/aaaa"
+                            [class.is-valid]="formulario.controls['parto'].valid && formulario.controls['parto'].touched"
+                            [class.is-invalid]="!formulario.controls['parto'].valid && formulario.controls['parto'].touched">
+                        <div class="valid-feedback"></div>
+                        <div class="invalid-feedback">
+                            *A data está em um formato inválido!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-success alert-dismissible alert-sm fade show" role="alert" *ngIf="aparecerMsg">
+                    Bovino cadastrado com sucesso!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                        (click)="aparecerMsg = false">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="alert alert-danger alert-dismissible alert-sm fade show" role="alert" *ngIf="msgNegativa != null">
+                    Erro ao cadastrar! {{msgNegativa}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                        (click)="msgNegativa = null">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="alert alert-danger alert-dismissible alert-sm fade show" role="alert" *ngIf="remover">
+                    Tem certeza que deseja remover esse bovino?
+                    <button type="button" class="btn btn-primary btn-sm mx-2 my-2" (click)="remover = false">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" (click)="excluir()">
+                        <i class="icon ion-md-trash"></i> Remover
+                    </button>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                        (click)="remover = false">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div *ngIf="formulario.controls['codigo'].value == null">
+                    <button (click)="salvar()" class="btn btn-success float-right mx-md-3"
+                        [disabled]="!formulario.valid">
+                        <i class="icon ion-md-save"></i> Salvar
+                    </button>
+                    <button (click)="cancelar()" class="btn btn-light float-right border">
+                        <i class="icon ion-md-close"></i> Limpar
+                    </button>
+                </div>
+                <div *ngIf="formulario.controls['codigo'].value != null && !remover">
+                    <button (click)="atualizar()" class="btn btn-success float-right mx-md-3"
+                        [disabled]="!formulario.valid">
+                        <i class="icon ion-md-save"></i> Salvar
+                    </button>
+                    <button class="btn btn-danger float-right mx-md-3" [disabled]="!formulario.valid"
+                        (click)="remover = true">
+                        <i class="icon ion-md-trash"></i> Remover
+                    </button>
+                    <button class="btn btn-light" (click)="showList()">
+                        <i class="icon ion-md-rewind"></i> Voltar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!--LISTA INICIO-->
+    <div *ngIf="list">
+
+        <!--FILTROS INICIO-->
+        <div class="row justify-content-center">
+            <div class="col col-md-8 col-sm-12">
+                <h5 class="my-md-3 text-left">Filtrar</h5>
+                <form class="form-row">
+                    <div class="form-group col-md-6 col-sm-12">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" #campoNome placeholder="Nome" maxlength="40">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    (click)="buscarNome(campoNome.value)">
+                                    <i class="icon ion-md-search"></i></button>
+                                <button class="btn btn-secondary" type="button"
+                                    (click)="showList(); campoNome.value=''"><i
+                                        class="icon ion-md-backspace"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 col-sm-12">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" #campoBrinco placeholder="Brinco" maxlength="40">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    (click)="buscarBrinco(campoBrinco.value)">
+                                    <i class="icon ion-md-search"></i></button>
+                                <button class="btn btn-secondary" type="button"
+                                    (click)="showList(); campoBrinco.value=''">
+                                    <i class="icon ion-md-backspace"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--Filtros FIM-->
+
+
+        <div class="row justify-content-center">
+            <div class="col col-md-8 col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">Brinco</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Situação</th>
+                                <th scope="col">Sexo</th>
+                                <th scope="col">Raça</th>
+                                <th scope="col">Data de Nascimento</th>
+                                <th scope="col">Próximo Parto</th>
+                                <th scope="col">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr scope="row" *ngFor="let b of lista">
+                                <td>{{b.brinco}}</td>
+                                <td>{{b.nome}}</td>
+                                <td>{{b.situacao}}</td>
+                                <td>{{b.sexo}}</td>
+                                <td>{{b.raca}}</td>
+                                <td>{{b.nascimento | date:'dd/MM/yyyy'}}</td>
+                                <td>{{b.parto | date:'dd/MM/yyyy'}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-info btn-sm" (click)="update(b)">
+                                        <i class="icon ion-md-eye"></i> Visualizar
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--LISTA FIM-->
+
+</div>
